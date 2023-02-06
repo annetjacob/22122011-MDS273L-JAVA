@@ -5,7 +5,8 @@ Reg. No: 22122011
 Email: annet.jacob@msds.christuniversity.in
 Class:  MSc. DS A
 
-Lab Exercise Question
+# Lab Exercise Question
+
 You are supposed to create a menu-driven program that has the following menu options:
 Enter a name
 Search for a name
