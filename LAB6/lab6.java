@@ -1,347 +1,230 @@
-package LAB6;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
+package lab6;
+import java.io.*;
 import java.util.Scanner;
 
-public class lab6 {
-    private int regNo;
-    private String name;
-    private String email;
-    private String phone;
-    private String studentClass;
-    private String department;
-
-    public lab6(int regNo, String name, String email, String phone, String studentClass, String department) {
+class Management {
+    String regNo;
+    String name;
+    String email;
+    String phone;
+    String className;
+    String Department;
+    Management(String regNo, String name, String email, String phone, String className, String Department) {
         this.regNo = regNo;
         this.name = name;
-        this.email = email;
         this.phone = phone;
-        this.studentClass = studentClass;
-        this.department = department;
+        this.email = email;
+        this.className = className;
+        this.Department = Department;
     }
-
-    public void printDetails() {
-        System.out.println("Reg. No.: " + regNo);
+    public void printingDetails() {
+        System.out.println("Registration Number: " + regNo);
         System.out.println("Name: " + name);
         System.out.println("Email: " + email);
         System.out.println("Phone: " + phone);
-        System.out.println("Class: " + studentClass);
-        System.out.println("Department: " + department);
+        System.out.println("Class: " + className);
+        System.out.println("Department: " + Department);
+    }
+    public String ConverttoString() {
+        return (regNo + "," + name + "," + email + "," + phone + "," + className + "," + Department);
+
+    }
+    public void ToFile() {
+        String fileName = name + ".txt";
+        File file = new File(fileName);
+
+        try {
+            FileWriter writer = new FileWriter(file);
+            writer.write(ConverttoString());
+            writer.close();
+        } catch (IOException e) {
+            System.out.println("Error eerupted  while saving file: " + e.getMessage());
+        }
     }
 
-    @Override
-    public String toString() {
-        return regNo + "," + name + "," + email + "," + phone + "," + studentClass + "," + department;
-    }
-
-    public int getRegNo() {
-        return regNo;
-    }
-
-    public String getName() {
-        return name;
-    }
 }
 
-class Main {
-    private static final int MAX_STUDENTS = 100;
-    private static final Scanner scanner = new Scanner(System.in);
-    private static final Student[] students = new Student[MAX_STUDENTS];
+public class lab6 {
+    private static final int MAXi = 100;
+    private static Management[] students = new Management[MAXi];
     private static int numStudents = 0;
 
     public static void main(String[] args) {
-        boolean quit = false;
-        while (!quit) {
-            System.out.println("\nMenu Options:");
+        Scanner scanner = new Scanner(System.in);
+        int choice;
+
+        do {
+            System.out.println("Choose an option:");
             System.out.println("1. Add a student");
             System.out.println("2. Search for a student");
-            System.out.println("3. Update student details");
+            System.out.println("3. Update the details of a student");
             System.out.println("4. Display all students");
-            System.out.println("5. Save student details to file");
-            System.out.println("6. Quit");
+            System.out.println("5. Exit");
 
-            System.out.print("Enter your choice: ");
-            int choice = scanner.nextInt();
-            scanner.nextLine();
+            choice = Integer.parseInt(scanner.nextLine());
 
             switch (choice) {
                 case 1:
-                    addStudent();
+                    addStudent(scanner);
                     break;
                 case 2:
-                    searchStudent();
+                    searchStudent(scanner);
                     break;
                 case 3:
-                    updateStudent();
+                    updateStudent(scanner);
                     break;
                 case 4:
                     displayAllStudents();
                     break;
                 case 5:
-                    saveStudentDetailsToFile();
-                    break;
-                case 6:
-                    quit = true;
+                    System.out.println("Exiting program...");
                     break;
                 default:
-                    System.out.println("Invalid choice. Please try again.");
+                    System.out.println("Invalid choice");
+                    break;
             }
-        }
+        } while (choice != 5);
+
+        scanner.close();
     }
 
-    private static void addStudent() {
-        if (numStudents == MAX_STUDENTS) {
+    private static void addStudent(Scanner scanner) {
+        if (numStudents >= MAXi) {
             System.out.println("Maximum number of students reached.");
             return;
         }
 
-        System.out.println("\nEnter the details of the student:");
-        System.out.print("Reg. No.: ");
-        int regNo = scanner.nextInt();
-        scanner.nextLine(); 
+        System.out.println("Enter registration number:");
+        String regNo = scanner.nextLine();
 
-        System.out.print("Name: ");
+        System.out.println("Enter name:");
         String name = scanner.nextLine();
 
-        System.out.print("Email: ");
+        System.out.println("Enter email:");
         String email = scanner.nextLine();
 
-        System.out.print("Phone: ");
+        System.out.println("Enter phone:");
         String phone = scanner.nextLine();
 
-        System.out.print("Class: ");
-        String studentClass = scanner.nextLine();
+        System.out.println("Enter class:");
+        String className = scanner.nextLine();
 
-        System.out.print("Department: ");
+        System.out.println("Enter department:");
         String department = scanner.nextLine();
 
-        Student student = new Student(regNo, name, email, phone, studentClass, department);
+        Management student = new Management(regNo, name, email, phone, className, department);
         students[numStudents] = student;
         numStudents++;
+
+        System.out.println("Student added successfully.");
+        student.ToFile();
     }
 
-    private static void searchStudent() {
-        System.out.println("\nSearch for a student:");
-        System.out.println("1. Search by name");
-        System.out.println("2. Search by register number");
+    private static void searchStudent(Scanner scanner) {
+        System.out.println("Search by (1) Name or (2) Register Number?");
+        int searchBy = scanner.nextInt();
+        scanner.nextLine();
 
-        System.out.print("Enter your choice: ");
-        int choice = scanner.nextInt();
-        scanner.nextLine(); // consume the newline character
+        if (searchBy == 1) {
+            System.out.println("Enter name:");
+            String name = scanner.nextLine();
 
-        switch (choice) {
-            case 1:
-                System.out.print("Enter the name of the student to search: ");
-                String name = scanner.nextLine();
-
-                boolean foundByName = false;
-                for (int i = 0; i < numStudents; i++) {
-                    Student student = students[i];
-                    if (student.getName().equals(name)) {
-                        student.printDetails();
-                        foundByName = true;
-                    }
+            for (int i = 0; i < numStudents; i++) {
+                if (students[i].ConverttoString().contains(name)) {
+                    students[i].printingDetails();
+                    return;
                 }
+            }
 
-                if (!foundByName) {
-                    System.out.println("Student with name " + name + " not found.");
-                }
-                break;
-            case 2:
-                System.out.print("Enter the register number of the student to search: ");
-                int regNo = scanner.nextInt();
+            System.out.println("Student not found.");
+        } else if (searchBy == 2) {
+            System.out.println("Enter register number:");
+            String regNo = scanner.nextLine();
 
-                boolean foundByRegNo = false;
-                for (int i = 0; i < numStudents; i++) {
-                    Student student = students[i];
-                    if (student.getRegNo() == regNo) {
-                        student.printDetails();
-                        foundByRegNo = true;
-                        break;
-                    }
+            for (int i = 0; i < numStudents; i++) {
+                if (students[i].toString().contains(regNo)) {
+                    students[i].printingDetails();
+                    return;
                 }
+            }
 
-                if (!foundByRegNo) {
-                    System.out.println("Student with register number " + regNo + " not found.");
-                }
-                break;
-            default:
-                System.out.println("Invalid choice. Please try again.");
+            System.out.println("Student not found.");
+        } else {
+            System.out.println("Invalid choice.");
         }
     }
 
-    private static void updateStudent() {
-        System.out.println("\nUpdate student details:");
-        System.out.println("1. Update by name");
-        System.out.println("2. Update by register number");
-
-        System.out.print("Enter your choice: ");
-        int choice = scanner.nextInt();
+    private static void updateStudent(Scanner scanner) {
+        System.out.println("Search by (1) Name or (2) Register Number?");
+        int searchBy = scanner.nextInt();
         scanner.nextLine(); // consume the newline character
 
-        switch (choice) {
-            case 1:
-                System.out.print("Enter the name of the student to update: ");
-                String name = scanner.nextLine();
+        int index = -1;
 
-                boolean foundByName = false;
-                for (int i = 0; i < numStudents; i++) {
-                    Student student = students[i];
-                    if (student.getName().equals(name)) {
-                        System.out.print("Enter the new details of the student:");
-                        System.out.print("Reg. No.: ");
-                        int regNo = scanner.nextInt();
-                        scanner.nextLine(); // consume the newline character
+        if (searchBy == 1) {
+            System.out.println("Enter name:");
+            String name = scanner.nextLine();
 
-                        System.out.print("Name: ");
-                        String newName = scanner.nextLine();
-
-                        System.out.print("Email: ");
-                        String email = scanner.nextLine();
-
-                        System.out.print("Phone: ");
-                        String phone = scanner.nextLine();
-
-                        System.out.print("Class: ");
-                        String studentClass = scanner.nextLine();
-
-                        System.out.print("Department: ");
-                        String department = scanner.nextLine();
-
-                        student = new Student(regNo, newName, email, phone, studentClass, department);
-                        students[i] = student;
-                        foundByName = true;
-                        break;
-                    }
+            for (int i = 0; i < numStudents; i++) {
+                if (students[i].ConverttoString().contains(name)) {
+                    index = i;
+                    break;
                 }
+            }
+        } else if (searchBy == 2) {
+            System.out.println("Enter register number:");
+            String regNo = scanner.nextLine();
 
-                if (!foundByName) {
-                    System.out.println("Student with name " + name + " not found.");
-                } else {
-                    System.out.println("Student details updated.");
+            for (int i = 0; i < numStudents; i++) {
+                if (students[i].ConverttoString().contains(regNo)) {
+                    index = i;
+                    break;
                 }
-                break;
-            case 2:
-                System.out.print("Enter the register number of the student to update: ");
-                int regNo = scanner.nextInt();
-
-                boolean foundByRegNo = false;
-                for (int i = 0; i < numStudents; i++) {
-                    Student student = students[i];
-                    if (student.getRegNo() == regNo) {
-                        System.out.print("Enter the new details of the student:");
-                        System.out.print("Reg. No.: ");
-                        int newRegNo = scanner.nextInt();
-                        scanner.nextLine(); // consume the newline character
-
-                        System.out.print("Name: ");
-                        String name = scanner.nextLine();
-
-                        System.out.print("Email: ");
-                        String email = scanner.nextLine();
-
-                        System.out.print("Phone: ");
-                        String phone = scanner.nextLine();
-
-                        System.out.print("Class: ");
-                        String studentClass = scanner.nextLine();
-
-                        System.out.print("Department: ");
-                        String department = scanner.nextLine();
-
-                        student = new Student(newRegNo, name, email, phone, studentClass, department);
-                        students[i] = student;
-                        foundByRegNo = true;
-                        break;
-                    }
-                }
-
-                if (!foundByRegNo) {
-                    System.out.println("Student with register number " + regNo + " not found.");
-                } else {
-                    System.out.println("Student details updated.");
-                }
-                break;
-            default:
-                System.out.println("Invalid choice. Please try again.");
+            }
+        } else {
+            System.out.println("Invalid choice.");
+            return;
         }
+
+        if (index == -1) {
+            System.out.println("Student not found.");
+            return;
+        }
+
+        System.out.println("Enter new registration number:");
+        String regNo = scanner.nextLine();
+
+        System.out.println("Enter new name:");
+        String name = scanner.nextLine();
+
+        System.out.println("Enter new email:");
+        String email = scanner.nextLine();
+
+        System.out.println("Enter new phone:");
+        String phone = scanner.nextLine();
+
+        System.out.println("Enter new class:");
+        String className = scanner.nextLine();
+
+        System.out.println("Enter new department:");
+        String department = scanner.nextLine();
+
+        students[index] = new Management(regNo, name, email, phone, className, department);
+
+        System.out.println("Student details updated successfully.");
+        students[index].ToFile();
     }
 
     private static void displayAllStudents() {
         if (numStudents == 0) {
             System.out.println("No students added yet.");
-        } else {
-            System.out.println("\nDetails of all students:");
+            return;
+        }
 
-            for (int i = 0; i < numStudents; i++) {
-                Student student = students[i];
-                student.printDetails();
-            }
+        System.out.println("List of all students:");
+
+        for (int i = 0; i < numStudents; i++) {
+            students[i].printingDetails();
         }
     }
-
-    private static void saveStudentDetailsToFile(Student student) {
-        try {
-            String fileName = student.getName() + ".txt";
-            PrintWriter writer = new PrintWriter(fileName);
-            writer.println(student.toString());
-            writer.close();
-        } catch (FileNotFoundException e) {
-            System.out.println("Error saving student details to file.");
-        }
-    }
-
-    private static void saveAllStudentsDetailsToFile() {
-        if (numStudents == 0) {
-            System.out.println("No students added yet.");
-        } else {
-            for (int i = 0; i < numStudents; i++) {
-                Student student = students[i];
-                saveStudentDetailsToFile(student);
-            }
-            System.out.println("Student details saved to files.");
-        }
-    }
-}
-
-
-public static void main(String[] args) {
-    int choice;
-    do {
-        System.out.println("\nMenu:");
-        System.out.println("1. Add a student");
-        System.out.println("2. Search for a student");
-        System.out.println("3. Update the details of a student");
-        System.out.println("4. Display all students");
-        System.out.println("5. Save the details of each student in a file");
-        System.out.println("6. Exit");
-
-        System.out.print("Enter your choice: ");
-        choice = scanner.nextInt();
-        scanner.nextLine(); // consume the newline character
-
-        switch (choice) {
-            case 1:
-                addStudent();
-                break;
-            case 2:
-                searchStudent();
-                break;
-            case 3:
-                updateStudent();
-                break;
-            case 4:
-                displayAllStudents();
-                break;
-            case 5:
-                saveAllStudentsDetailsToFile();
-                break;
-            case 6:
-                System.out.println("Exiting the program...");
-                break;
-            default:
-                System.out.println("Invalid choice. Please try again.");
-        }
-    } while (choice != 6);
 }
