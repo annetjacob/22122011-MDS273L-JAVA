@@ -1,12 +1,14 @@
 # 22122011-MDS273L-JAVA
 
 Name: Annet Jacob
+
 Reg. No: 22122011
+
 Email: annet.jacob@msds.christuniversity.in
+
 Class:  MSc. DS A
 
-#LAB7
-Qn.
+# Lab7 Exercise Question
 
 Create a new folder in git named 'Lab 7' for the following question and solve the following: create a flowchart and document the results, constraints, etc., in the README.md file for the lab.
 
