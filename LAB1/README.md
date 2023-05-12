@@ -1,12 +1,14 @@
 # 22122011-MDS273L-JAVA
 
 Name: Annet Jacob
+
 Reg. No: 22122011
+
 Email: annet.jacob@msds.christuniversity.in
+
 Class:  MSc. DS A
 
-#LAB1
-Qn.
+# Lab1 Exercise Question
 
 Basic Setup Instructions
 Step 1. Create a GitHub Repository, which is public, with the name [<REGNO>-MDS273L-JAVA].
