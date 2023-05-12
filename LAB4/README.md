@@ -8,7 +8,7 @@ Email: annet.jacob@msds.christuniversity.in
 
 Class:  MSc. DS A
 
-# Lab4 Exercise Question
+# Lab4_Exercise Question
 
 Write a JAVA Menu driven program that does the following:
 
