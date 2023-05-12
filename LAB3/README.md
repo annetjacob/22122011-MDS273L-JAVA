@@ -1,11 +1,14 @@
 # 22122011-MDS273L-JAVA
 
 Name: Annet Jacob
+
 Reg. No: 22122011
+
 Email: annet.jacob@msds.christuniversity.in
+
 Class:  MSc. DS A
 
-#QUESTION:
+# Lab3 Exercise Question
 
 Create a java program, that stores the details of a student (Name, Register Number, Email, Class, Department).
 You can use a two-dimensional array to store the details.
