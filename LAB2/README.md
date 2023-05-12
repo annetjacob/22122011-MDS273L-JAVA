@@ -8,7 +8,7 @@ Email: annet.jacob@msds.christuniversity.in
 
 Class:  MSc. DS A
 
-# Lab Exercise Question
+# Lab2 Exercise Question
 
 You are supposed to create a menu-driven program that has the following menu options:
 Enter a name
