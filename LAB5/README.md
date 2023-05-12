@@ -1,11 +1,14 @@
 # 22122011-MDS273L-JAVA
 
 Name: Annet Jacob
+
 Reg. No: 22122011
+
 Email: annet.jacob@msds.christuniversity.in
+
 Class:  MSc. DS A
 
-#QUESTION:
+# Lab5 Exercise Question
 
 Below is an encryption/decryption standard in which the letters in the message will be replaced with the letters in the cypher row
 
